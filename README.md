@@ -1,4 +1,4 @@
-# UIchatbot
+# Text2Speech
 
 ## Project setup
 ```
