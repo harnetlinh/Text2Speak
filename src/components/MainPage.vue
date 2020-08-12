@@ -47,8 +47,8 @@
 
       <div class="row">
 
-        <div class="col-lg-12 col-sm">
-          <div class="card" id="maker">
+        <div class="col-lg-10 col-sm">
+          <div class="card" id="maker" ref="maker" >
             <center>
               <h4 id="title">Type your text here</h4>
             </center>
@@ -80,6 +80,41 @@
               </div>
             </div>
 
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-sm">
+          <div class="card" >
+              <b-col sm="15">
+                <ul>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                </ul>
+              </b-col>
           </div>
         </div>
       </div>

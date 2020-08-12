@@ -12,6 +12,7 @@
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.15.0",
     "core-js": "^3.6.5",
+    "hls.js": "^0.14.8",
     "sass": "^1.26.10",
     "sass-loader": "^9.0.2",
     "scss-loader": "0.0.1",

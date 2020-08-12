@@ -6,9 +6,7 @@ import Login from '../pages/Login.vue'
 import NotFound from '../pages/NotFound.vue'
 import Overall from '../components/Overall.vue'
 import Individual from '../components/Individual.vue'
-import QnAMaker from '../components/QnAMaker.vue'
-import QuestionsList from '../components/QuestionsList.vue'
-import Quizzes from '../components/Quizzes.vue'
+import TTS from '../components/MainPage.vue'
 import Setting from '../components/Setting.vue'
 
 Vue.use(VueRouter)
@@ -17,11 +15,11 @@ const routes = [
     {
         path: '/',
         alias: '/dashboard',
-        redirect: '/dashboard/qna-maker',
+        redirect: '/dashboard/text-to-speech',
         name: 'Dashboard',
         component: Dashboard,
         meta: {
-            title: 'Dashboard - EduChat'
+            title: 'Dashboard - Text2Speech'
         },
         children: [
             {
@@ -29,7 +27,7 @@ const routes = [
                 name: 'Overall',
                 component: Overall,
                 meta: {
-                    title: 'Overall - EduChat'
+                    title: 'Overall - Text2Speech'
                 }
             },
             {
@@ -37,33 +35,19 @@ const routes = [
                 name: 'Individual',
                 component: Individual,
                 meta: {
-                    title: 'Individual - EduChat'
+                    title: 'Individual - Text2Speech'
                 }
             },
             {
-                path: 'qna-maker',
-                name: 'QnAMaker',
-                component: QnAMaker,
+                path: 'text-to-speech',
+                name: 'TTS',
+                alias: 'text-to-speech',
+                component: TTS,
                 meta: {
-                    title: 'QnA Maker - EduChat'
+                    title: 'Home - Text2Speech'
                 }
             },
-            {
-                path: 'questions-list',
-                name: 'Questions List',
-                component: QuestionsList,
-                meta: {
-                    title: 'Questions List - EduChat'
-                }
-            },
-            {
-                path: 'quizzes',
-                name: 'Quizzes',
-                component: Quizzes,
-                meta: {
-                    title: 'Quizzes - EduChat'
-                }
-            },
+
             {
                 path: 'setting',
                 name: 'Setting',
@@ -76,7 +60,7 @@ const routes = [
     },
     {
         path: '/dashboard',
-        redirect: '/dashboard/qna-maker',
+        redirect: '/dashboard/text-to-speech',
     },
     {
         path: '/login',

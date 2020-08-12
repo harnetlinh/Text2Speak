@@ -4,7 +4,7 @@
             <ul class="sidebar-nav">
                 <li class="sidebar-avatar">
                     <div class="avatar">
-                        <img src="../assets/avatar.png" alt="">
+                        <img src="../assets/avatar.png" alt=""  @click=" $router.go('/dashboard/qna-maker') ">
                     </div>
                     <h3 class="avatar-name">
                         <!-- Teacher Admin -->
