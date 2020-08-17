@@ -47,14 +47,14 @@
 
       <div class="row">
 
-        <div class="col-lg-10 col-sm">
-          <div class="card" id="maker" ref="maker" >
+        <div class="col-lg-9 col-sm">
+          <div class="card center-div" id="maker" ref="maker" >
             <center>
               <h4 id="title">Type your text here</h4>
             </center>
 
             <b-row class="my-0">
-              <b-col sm="2">
+              <b-col sm="4">
                 <label for="textarea-auto-height">Turn on highlight Text</label>
               </b-col>
               <b-col sm="1">
@@ -65,7 +65,7 @@
                 <highlightable-input
                   id="sel"
                   @mouseup="highlighter()"
-                  style="border:1px solid black; min-height:30vh" 
+                  style="border:1px solid black;" 
                   highlight-style="background-color:yellow" 
                   :highlight-enabled="highlightEnabled" 
                   :highlight="highlight" 
@@ -74,7 +74,7 @@
               </b-col>
             </b-row>
             
-            <div class="row justify-content-md-center">
+            <div class="row justify-content-md-center fixed-bottom">
               <div class="col-md-auto" id="btn-submit">
                 <b-button @click="sendMsg()">Submit</b-button>
               </div>
@@ -83,11 +83,15 @@
           </div>
         </div>
 
-        <div class="col-lg-2 col-sm">
-          <div class="card" >
+        <div class="col-lg-3 col-sm">
+          <div class="card center-div overflow-auto" >
               <b-col sm="15">
                 <ul>
-                  <li></li>
+                  <li>
+                    <keep-alive>
+                      <component :is="test" />
+                    </keep-alive>
+                  </li>
                   <li></li>
                   <li></li>
                   <li></li>
@@ -149,6 +153,7 @@
         <b-spinner label="Loading..."></b-spinner>
       </div>
     </b-modal>
+    
   </div>
 </template>
 
@@ -156,11 +161,12 @@
 import axios from 'axios';
 import HighlightableInput from "vue-highlightable-input"
 import Aplayer from 'vue-aplayer'
+import compo from './elements/button'
 export default {
     name: 'QnAMaker',
     components : {
       HighlightableInput,
-      Aplayer
+      Aplayer,
     },
     data() {
       return {
@@ -178,11 +184,13 @@ export default {
           // "whatever",
           // {start: 2, end: 5, style:"background-color:#f330ff"}
         ],
+        test:'',
       highlightEnabled: true
       }
     },
     mounted() {
     window.addEventListener('mouseup', this.highlighter);
+    this.test = compo;
   },
     methods:{
       onChangedSearch(value)
@@ -226,4 +234,6 @@ export default {
 
 </style>
 
-<style scoped src="../assets/css/QnAMaker.css"></style>
+<style scoped src="../assets/css/QnAMaker.css">
+
+</style>

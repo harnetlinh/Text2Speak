@@ -1,7 +1,12 @@
+@import "scroll.css";
 *:focus{
     -webkit-box-shadow: none!important;
     box-shadow: none!important;
     outline: 0;
+}
+.center-div{
+    height: 50vh;
+    /* overflow-y: scroll; */
 }
 
 #qna {
