@@ -27,7 +27,6 @@
                                 title: isReady?'READY TO HEAR':'NOT AVAILABLE',
                                 artist: 'FPT AI',
                                 src: voicerecord,
-                                pic: 'https://moeplayer.b0.upaiyun.com/aplayer/secretbase.jpg',
                                 theme:isReady?'rgb(65, 184, 131)':'tomato'
                               }"
                             />
@@ -77,6 +76,7 @@
             <div class="row justify-content-md-center fixed-bottom">
               <div class="col-md-auto" id="btn-submit">
                 <b-button @click="sendMsg()">Submit</b-button>
+                <b-button @click="merge()"> TEST MEGR</b-button>
               </div>
             </div>
 
@@ -87,9 +87,9 @@
           <div class="card center-div overflow-auto" >
               <b-col sm="15">
                 <ul>
-                  <li>
+                  <li ref="demogetHTML">
                     <keep-alive>
-                      <component :is="test" />
+                      <component v-on:child-checkbox="changeToHTML" :is="test" >hello</component>
                     </keep-alive>
                   </li>
                   <li></li>
@@ -137,7 +137,7 @@
                   <p>Hello. How can I help you?</p>
                 </div>
               </div>
-            </div>
+            </div>+
           </div>
           <div id="send" class="row">
               <b-form-input  id="textSend" class="col-10"></b-form-input>
@@ -158,22 +158,27 @@
 </template>
 
 <script>
+import Crunker from 'crunker'
 import axios from 'axios';
 import HighlightableInput from "vue-highlightable-input"
 import Aplayer from 'vue-aplayer'
 import compo from './elements/button'
+import speak from './elements/speak'
+const audio = new Crunker();
+const nullAudio = new Audio();
 export default {
     name: 'QnAMaker',
     components : {
       HighlightableInput,
       Aplayer,
+      'speak':speak
     },
     data() {
       return {
         valueSearch:"",
         box: false,
         textSend: '',
-        voicerecord:"",
+        voicerecord:nullAudio,
         msg: '',
         isReady:false,
         highlight: [
@@ -193,6 +198,15 @@ export default {
     this.test = compo;
   },
     methods:{
+      changeToHTML(value){
+        console.log("OnClicked")
+        console.log(value)
+        if(value == true)
+        {
+          this.test = 'speak';
+        }
+        console.log(this.$refs.demogetHTML)
+      },
       onChangedSearch(value)
       {
         console.log( "HERRRREEE " + value)
@@ -225,6 +239,27 @@ export default {
       {
         this.onChangedSearch(text)
       }
+    },
+    merge(){
+      audio
+          .fetchAudio("http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/thrust.mp3", "http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/thrust.mp3")
+          .then(buffers => {
+            // => [AudioBuffer, AudioBuffer]
+            audio.mergeAudio(buffers);
+          })
+          .then(merged => {
+            // => AudioBuffer
+            audio.export(merged, "audio/mp3");
+          })
+          .then(output => {
+            // => {blob, element, url}
+            audio.download(output.blob);
+            document.append(output.element);
+            console.log(output.url);
+          })
+          .catch(error => {
+            // => Error Message
+          });
     }
     }
 }
