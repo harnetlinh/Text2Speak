@@ -61,15 +61,25 @@
                 </b-form-checkbox>
               </b-col>
               <b-col sm="12">
-                <highlightable-input
+                <!-- <highlightable-input
                   id="sel"
+                  ref="dynamicDiv"
                   @mouseup="highlighter()"
                   style="border:1px solid black;" 
                   highlight-style="background-color:yellow" 
                   :highlight-enabled="highlightEnabled" 
                   :highlight="highlight" 
                   v-model="msg"
-                />
+                  :key="componentKey"
+                /> -->
+                <div 
+                id="sel"
+                ref="dynamicDiv"
+                contenteditable="true"
+                style="border:1px solid black;" 
+                >
+
+                </div>
               </b-col>
             </b-row>
             
@@ -77,6 +87,9 @@
               <div class="col-md-auto" id="btn-submit">
                 <b-button @click="sendMsg()">Submit</b-button>
                 <b-button @click="merge()"> TEST MEGR</b-button>
+                <b-button @click="forceUpdate()">FORCE UPDATE</b-button>
+                <b-button @click="gettext()">GET TEXT</b-button>
+                <b-button @click="red()">HIGHTLIGHT TEXT</b-button>
               </div>
             </div>
 
@@ -159,6 +172,7 @@ export default {
         voicerecord:nullAudio,
         msg: '',
         isReady:false,
+        componentKey : 0,
         highlight: [
           {text:'chicken', style:"background-color:#f37373"},
           {text:'noodle', style:"background-color:#fca88f"},
@@ -173,10 +187,29 @@ export default {
       }
     },
     mounted() {
-    window.addEventListener('mouseup', this.testlighter);
+    window.addEventListener('mouseup', this.highlighter);
     this.test = compo;
   },
     methods:{
+      red(){
+      // {      
+          var selection = window.getSelection().getRangeAt(0);
+          if(window.getSelection().baseNode.parentNode.id != "sel") return;
+          var selectedText = selection.extractContents();
+          var span = document.createElement("span");
+          span.style.color = "red";
+          span.appendChild(selectedText);
+          selection.insertNode(span);
+      // }
+      },
+      gettext(){
+        console.log("INNERTEXT")
+        console.log(this.$refs.dynamicDiv)
+        console.log(this.$refs.dynamicDiv.internalValue)
+      },
+      forceUpdate(){
+        this.componentKey++;
+      },
       getSelectedText() {
         let t = (document.all) ? document.selection.createRange().text : document.getSelection();
         console.log("getSelectedText")
@@ -189,7 +222,7 @@ export default {
         console.log(selection_text)
         // How do I add a span around the selected text?
         
-        var span = document.createElement('button');
+        var span = document.createElement('b-button');
         span.textContent = selection_text;
         
         var range = selection.getRangeAt(0);
