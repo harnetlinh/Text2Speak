@@ -84,39 +84,15 @@
         </div>
 
         <div class="col-lg-3 col-sm">
-          <div class="card center-div overflow-auto" >
+          <div class="card center-div overflow-auto" style="" >
               <b-col sm="15">
-                <ul>
-                  <li ref="demogetHTML">
-                    <keep-alive>
-                      <component v-on:child-checkbox="changeToHTML" :is="test" >hello</component>
-                    </keep-alive>
+                <ul style="list-style-type:none;">
+                  <li>
+                    <choiceSub></choiceSub>
                   </li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
+                  <li v-for="(i,index) in 10" :key="index">
+                    <component :is="choiceSSML"></component>
+                  </li>
                 </ul>
               </b-col>
           </div>
@@ -158,6 +134,7 @@
 </template>
 
 <script>
+import choiceSub from './choices/choiceSub'
 import Crunker from 'crunker'
 import axios from 'axios';
 import HighlightableInput from "vue-highlightable-input"
@@ -171,7 +148,8 @@ export default {
     components : {
       HighlightableInput,
       Aplayer,
-      'speak':speak
+      'speak':speak,
+      choiceSub
     },
     data() {
       return {
@@ -190,14 +168,34 @@ export default {
           // {start: 2, end: 5, style:"background-color:#f330ff"}
         ],
         test:'',
-      highlightEnabled: true
+      highlightEnabled: true,
+      choiceSSML:choiceSub
       }
     },
     mounted() {
-    window.addEventListener('mouseup', this.highlighter);
+    window.addEventListener('mouseup', this.testlighter);
     this.test = compo;
   },
     methods:{
+      getSelectedText() {
+        let t = (document.all) ? document.selection.createRange().text : document.getSelection();
+        console.log("getSelectedText")
+        return t;
+      },
+      testlighter(){
+        console.log("testlighter")
+        var selection = this.getSelectedText();
+        var selection_text = selection.toString();
+        console.log(selection_text)
+        // How do I add a span around the selected text?
+        
+        var span = document.createElement('button');
+        span.textContent = selection_text;
+        
+        var range = selection.getRangeAt(0);
+        range.deleteContents();
+        range.insertNode(span);
+      },
       changeToHTML(value){
         console.log("OnClicked")
         console.log(value)
@@ -270,5 +268,5 @@ export default {
 </style>
 
 <style scoped src="../assets/css/QnAMaker.css">
-
+span {color: green;}
 </style>
