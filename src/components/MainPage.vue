@@ -172,6 +172,7 @@ export default {
     },
     data() {
       return {
+        numID:1,
         valueSearch:"",
         box: false,
         textSend: '',
@@ -179,6 +180,7 @@ export default {
         msg: '',
         isReady:false,
         componentKey : 0,
+        listSSML:[],
         highlight: [
           {text:'chicken', style:"background-color:#f37373"},
           {text:'noodle', style:"background-color:#fca88f"},
@@ -194,12 +196,18 @@ export default {
     },
     mounted() {
     // window.addEventListener('mouseup', this.highlighter);
-    // this.test = compo;
+    this.test = compo;
   },
     methods:{
+      objSSML(id,maker,engine){ 
+          this.id = id; 
+          this.maker = maker; 
+          this.engine = engine; 
+      },
       red(){
         this.$refs.contentEditableDiv.red();
       },
+      
       gettext(){
         console.log("INNERTEXT")
         console.log(this.$refs.dynamicDiv)

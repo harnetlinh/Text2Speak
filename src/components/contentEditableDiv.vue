@@ -27,14 +27,63 @@
 </template>
 
 <script>
+class prosody{
+  constructor(){
+      this.pitch = null;
+      this.contour = null;
+      this.ranger = null;
+      this.rate = null;
+      this.duration = null;
+      this.volume = null;
+  }
+}
+class break_ {
+  constructor(){
+    this.strength = null;
+    this.time = null;
+  }
+}
+class say_as{
+  constructor(){
+    this.interpret_as = null;
+    this.format = null;
+    this.detail = null;
+  }
+}
+class audio_{
+  constructor(){
+    this.src = null;
+  }
+}
+class mark{
+  constructor(){
+    this.name =  null;
+  }
+}
+class ClassSSML {
+  constructor(id) {
+    this.id = id;
+    this.p = null;
+    this.paragraph = null;//   
+    this.say_as = new say_as();
+    this.emphasis = null;
+    this.prosody =  new prosody();
+    this.break = new break_();
+    this.audio = new audio_();
+    this.desc = null;
+    this.mark = new mark();
+  }
+}
 import VueContext from 'vue-context';
 import 'vue-context/src/sass/vue-context.scss';
 export default {
     data(){
         return{
+        numID:1,
         viewMenu: false,
         top: '0px',
-        left: '0px'
+        left: '0px',
+        listSSML:[],
         }
     },
     components: {
@@ -42,18 +91,33 @@ export default {
     },
     methods:{
         red(data){
-      // {     
-          console.log(this.$refs.dynamicDiv);
-          console.log("RED") 
-          console.log(document.getSelection())
+      var _this = this;    
           var selection = window.getSelection().getRangeAt(0);
-          if(window.getSelection().baseNode.parentNode.id != "sel") return;
-          var selectedText = selection.extractContents();
-          var span = document.createElement("speak");
-          span.style.backgroundColor = "red";
-          span.appendChild(selectedText);
-          selection.insertNode(span);
-      // }
+          // console.log(window.getSelection())
+          console.log("select "+ window.getSelection().anchorNode.parentNode.nodeName)
+          if(window.getSelection().anchorNode.parentNode.nodeName === "SPEAK")
+          {console.log("SPEAK");
+          // console.log(window.getSelection().anchorNode.parentNode.nodeName = "")
+          }else{
+            if(window.getSelection().baseNode.parentNode.id != "sel") return;
+            var selectedText = selection.extractContents();
+            var span = document.createElement("speak");
+            span.setAttribute("id",this.numID)
+            this.numID++;
+            let x = new ClassSSML(this.numID)
+            this.listSSML.push(x)
+            span.onclick = function(){
+              _this.getlistSSML(this.id)
+            }
+            span.style.color = "red";
+            span.appendChild(selectedText);
+            selection.insertNode(span);
+          }
+      },
+      getlistSSML(id){
+        console.log(id)
+        this.listSSML[0].say_as.interpret_as = 4
+        console.log(this.listSSML[0].say_as.interpret_as)
       },
     }
 }
