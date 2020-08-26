@@ -72,14 +72,18 @@
                   v-model="msg"
                   :key="componentKey"
                 /> -->
-                <div 
+                <contenteditableDiv
+                  ref="contentEditableDiv"
+                >
+                </contenteditableDiv>
+                <!-- <div 
                 id="sel"
                 ref="dynamicDiv"
                 contenteditable="true"
                 style="border:1px solid black;" 
                 >
 
-                </div>
+                </div> -->
               </b-col>
             </b-row>
             
@@ -147,6 +151,7 @@
 </template>
 
 <script>
+import contenteditableDiv from './contentEditableDiv'
 import choiceSub from './choices/choiceSub'
 import Crunker from 'crunker'
 import axios from 'axios';
@@ -162,7 +167,8 @@ export default {
       HighlightableInput,
       Aplayer,
       'speak':speak,
-      choiceSub
+      choiceSub,
+      contenteditableDiv
     },
     data() {
       return {
@@ -187,63 +193,19 @@ export default {
       }
     },
     mounted() {
-    window.addEventListener('mouseup', this.highlighter);
-    this.test = compo;
+    // window.addEventListener('mouseup', this.highlighter);
+    // this.test = compo;
   },
     methods:{
       red(){
-      // {      
-          var selection = window.getSelection().getRangeAt(0);
-          if(window.getSelection().baseNode.parentNode.id != "sel") return;
-          var selectedText = selection.extractContents();
-          var span = document.createElement("span");
-          span.style.color = "red";
-          span.appendChild(selectedText);
-          selection.insertNode(span);
-      // }
+        this.$refs.contentEditableDiv.red();
       },
       gettext(){
         console.log("INNERTEXT")
         console.log(this.$refs.dynamicDiv)
         console.log(this.$refs.dynamicDiv.internalValue)
       },
-      forceUpdate(){
-        this.componentKey++;
-      },
-      getSelectedText() {
-        let t = (document.all) ? document.selection.createRange().text : document.getSelection();
-        console.log("getSelectedText")
-        return t;
-      },
-      testlighter(){
-        console.log("testlighter")
-        var selection = this.getSelectedText();
-        var selection_text = selection.toString();
-        console.log(selection_text)
-        // How do I add a span around the selected text?
-        
-        var span = document.createElement('b-button');
-        span.textContent = selection_text;
-        
-        var range = selection.getRangeAt(0);
-        range.deleteContents();
-        range.insertNode(span);
-      },
-      changeToHTML(value){
-        console.log("OnClicked")
-        console.log(value)
-        if(value == true)
-        {
-          this.test = 'speak';
-        }
-        console.log(this.$refs.demogetHTML)
-      },
-      onChangedSearch(value)
-      {
-        console.log( "HERRRREEE " + value)
-        let randomColor = 'background-color:#'+(Math.random()*0xFFFFFF<<0).toString(16);
-        this.highlight.push({text:value, style:randomColor})
-      },
+      
       sendMsg(){
         this.$bvModal.show('modal-spinner')
         axios.post(`http://c39a6c482a7a.ngrok.io/getOnlyMp3`,{
@@ -263,13 +225,6 @@ export default {
           document.getElementById("sel").textContent
           let text = window.getSelection().toString();
         return text;
-    },
-    highlighter() {
-      let text = this.getSelectionText();
-      if(text != 0 && text != "")
-      {
-        this.onChangedSearch(text)
-      }
     },
     merge(){
       audio

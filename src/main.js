@@ -19,7 +19,7 @@ Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
 Vue.config.ignoredElements = ['speak','say-as']
 
-new Vue({
+var vueapp = new Vue({
   axios,
   router,
   render: h => h(App),
