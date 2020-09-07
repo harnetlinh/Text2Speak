@@ -4,7 +4,6 @@ import VueRouter from 'vue-router'
 import Dashboard from '../pages/Dashboard.vue'
 import Login from '../pages/Login.vue'
 import NotFound from '../pages/NotFound.vue'
-import Overall from '../components/Overall.vue'
 import Individual from '../components/Individual.vue'
 import TTS from '../components/MainPage.vue'
 import Setting from '../components/Setting.vue'
@@ -22,14 +21,6 @@ const routes = [
             title: 'Dashboard - Text2Speech'
         },
         children: [
-            {
-                path: 'overall',
-                name: 'Overall',
-                component: Overall,
-                meta: {
-                    title: 'Overall - Text2Speech'
-                }
-            },
             {
                 path: 'individual',
                 name: 'Individual',

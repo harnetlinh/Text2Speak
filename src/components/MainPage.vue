@@ -209,9 +209,7 @@ export default {
       },
       
       gettext(){
-        console.log("INNERTEXT")
-        console.log(this.$refs.dynamicDiv)
-        console.log(this.$refs.dynamicDiv.internalValue)
+        this.$refs.contentEditableDiv.getContent();
       },
       
       sendMsg(){

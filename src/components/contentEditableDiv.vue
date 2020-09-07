@@ -7,7 +7,7 @@
     style="border:1px solid black;width: 100%;height: 100%;" 
     @contextmenu.prevent="$refs.menu.open($event, {})"
     >
-    
+    {{ <break/> }}
   </div>
   <vue-context ref="menu">
         <template slot-scope="child" v-if="child.data">
@@ -23,24 +23,38 @@
             </li>
         </template>
     </vue-context>
+    <b-form-checkbox
+      id="checkbox-1"
+      v-model="status"
+      name="checkbox-1"
+      value="1"
+      unchecked-value="0"
+    >
+      Break
+    </b-form-checkbox>
+    <b-button @click="tagBreak()">SAVE</b-button>
+
 </div>
 </template>
 
 <script>
-const constructor = {
+const constructorSSML = {
     id : 0,
     p : {
+      isDouble : 1,
       isActive : 0,
       tag : "emphasis",
-      attributes : [],
+      attributes : {},
     },
     paragraph : {
+      isDouble : 1,
       isActive : 0,
       tag : "paragraph",
-      attributes : [],
+      attributes : {},
     },   
     say_as : {
-      isActive = 0,
+      isDouble : 1,
+      isActive : 0,
       tag : "say-as",
       attributes : {
         interpret_as : {
@@ -58,7 +72,8 @@ const constructor = {
       },
     },
     emphasis : {
-      isActive = 0,
+      isDouble : 1,
+      isActive : 0,
       tag : "emphasis",
       attributes : {
         level: {
@@ -70,7 +85,8 @@ const constructor = {
       }
     },
     prosody :  {
-      isActive = 0,
+      isDouble : 1,
+      isActive : 0,
       tag : "emphasis",
       attributes : {
         pitch : {
@@ -81,84 +97,88 @@ const constructor = {
         },
         contour : {
           isActive : 0,
-          text: "pitch",
+          text: "contour",
+          value: "",
+          options: []
+        },
+        ranger : {
+          isActive : 0,
+          text: "ranger",
           value: "",
           options: ["x-high","high","medium","low","x-low","default"]
+        },
+        rate : {
+          isActive : 0,
+          text: "rate",
+          value: "",
+          options: ["x-fast","fast","medium","slow","x-slow","default"]
+        },
+        duration : {
+          isActive : 0,
+          text: "duration",
+          value: "",
+          options: []
+        },
+        volume : {
+          isActive : 0,
+          text: "rate",
+          value: "",
+          options: ["slient","x-soft","soft","medium","loud","x-loud","default"]
+        }
+      },
+    },
+    break : {
+      isDouble : 0,
+      isActive : 0,
+      tag : "break",
+      attributes : {
+        strength : {
+          isActive : 0,
+          text: "strength",
+          value: "",
+          options: ["none","x-small","small","medium","large","x-large"]
+        },
+        time : {
+          isActive : 0,
+          text: "time",
+          value: "",
+          options: []
         }
       }
-      
-      contour : null;
-      this.ranger = null;
-      this.rate = null;
-      this.duration = null;
-      this.volume = null;
-  };
-    this.break = new break_();
-    this.audio = new audio_();
-    this.desc = null;
-    this.mark = new mark();
-}
-class prosody{
-  constructor(){
-      this.pitch = null;
-      this.contour = null;
-      this.ranger = null;
-      this.rate = null;
-      this.duration = null;
-      this.volume = null;
+    },
+    audio : {
+      isDouble : 0,
+      isActive : 0,
+      tag : "audio",
+      attributes : {
+        src : {
+          isActive : 0,
+          text: "src",
+          value: "",
+          options: []
+        }
+      }
+    },
+    desc : {
+      isDouble : 1,
+      isActive : 0,
+      tag : "desc",
+      attributes : {}
+    },
+    mark : {
+      isDouble : 1,
+      isActive : 0,
+      tag : "mark",
+      attributes : {
+        name : {
+          isActive : 0,
+          text: "name",
+          value: "",
+          options: []
+        }
+      }
+    }
   }
-}
-class break_ {
-  constructor(){
-    this.strength = null;
-    this.time = null;
-  }
-}
-class say_as{
-  constructor(){
-    this.interpret_as = null;
-    this.format = null;
-    this.detail = null;
-  }
-}
-class audio_{
-  constructor(){
-    this.src = null;
-  }
-}
-class mark{
-  constructor(){
-    this.name =  null;
-  }
-}
-class emphasis{
-  constructor(){
-    this.isActive = false;
-    this.tag = "emphasis";
-    this.attributes = [
-      {}
-    ];
-  }
-}
-class emphasis_attributes{
-  constructor(){
-    this.a
-  }
-};
-class ClassSSML {
-  constructor(id) {
-    this.id = id;
-    this.p = null;
-    this.paragraph = null;//   
-    this.say_as = new say_as();
-    this.emphasis = new emphasis();
-    this.prosody =  new prosody();
-    this.break = new break_();
-    this.audio = new audio_();
-    this.desc = null;
-    this.mark = new mark();
-  }
-}
 import VueContext from 'vue-context';
 import 'vue-context/src/sass/vue-context.scss';
 export default {
@@ -169,12 +189,19 @@ export default {
         top: '0px',
         left: '0px',
         listSSML:[],
+        choosenTextData:{}
         }
     },
     components: {
             VueContext 
     },
     methods:{
+      getContent(){
+        console.log(this.$refs.dynamicDiv.innerHTML)
+        var str = this.$refs.dynamicDiv.innerHTML;
+        str =  str.replace("></break>","/>")
+        console.log(str)
+      },
         red(data){
       var _this = this;    
           var selection = window.getSelection().getRangeAt(0);
@@ -187,9 +214,10 @@ export default {
             if(window.getSelection().baseNode.parentNode.id != "sel") return;
             var selectedText = selection.extractContents();
             var span = document.createElement("speak");
-            span.setAttribute("id",this.numID)
             this.numID++;
-            let x = new ClassSSML(this.numID)
+            span.setAttribute("id",this.numID)
+            let x = new Object(constructorSSML)
+            x.id = this.numID;
             this.listSSML.push(x)
             span.onclick = function(){
               _this.getlistSSML(this.id)
@@ -199,10 +227,16 @@ export default {
             selection.insertNode(span);
           }
       },
+      tagBreak(){
+
+      },
       getlistSSML(id){
-        console.log(id)
-        this.listSSML[0].say_as.interpret_as = 4
-        console.log(this.listSSML[0].say_as.interpret_as)
+        console.log("id = "+id)
+        var one = this.listSSML.filter(function(one){
+            return one.id == id
+        })
+        this.choosenTextData = one[0]
+        console.log(this.choosenTextData)
       },
     }
 }
