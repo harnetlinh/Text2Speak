@@ -27,6 +27,77 @@
 </template>
 
 <script>
+const constructor = {
+    id : 0,
+    p : {
+      isActive : 0,
+      tag : "emphasis",
+      attributes : [],
+    },
+    paragraph : {
+      isActive : 0,
+      tag : "paragraph",
+      attributes : [],
+    },   
+    say_as : {
+      isActive = 0,
+      tag : "say-as",
+      attributes : {
+        interpret_as : {
+          isActive : 0,
+          text : "interpret-as",
+          value: "",
+          options: ["date","time","literal","telephone","currency","cardinal","ordinal","digits"]
+        },
+        format : {
+          isActive : 0,
+          text : "format",
+          value: "",
+          options: []
+        },
+      },
+    },
+    emphasis : {
+      isActive = 0,
+      tag : "emphasis",
+      attributes : {
+        level: {
+          isActive : 0,
+          text: "level",
+          value: "",
+          options: ["strong","moderate","none","reduced"]
+        }
+      }
+    },
+    prosody :  {
+      isActive = 0,
+      tag : "emphasis",
+      attributes : {
+        pitch : {
+          isActive : 0,
+          text: "pitch",
+          value: "",
+          options: ["x-high","high","medium","low","x-low","default"]
+        },
+        contour : {
+          isActive : 0,
+          text: "pitch",
+          value: "",
+          options: ["x-high","high","medium","low","x-low","default"]
+        }
+      }
+      
+      contour : null;
+      this.ranger = null;
+      this.rate = null;
+      this.duration = null;
+      this.volume = null;
+  };
+    this.break = new break_();
+    this.audio = new audio_();
+    this.desc = null;
+    this.mark = new mark();
+}
 class prosody{
   constructor(){
       this.pitch = null;
@@ -60,13 +131,27 @@ class mark{
     this.name =  null;
   }
 }
+class emphasis{
+  constructor(){
+    this.isActive = false;
+    this.tag = "emphasis";
+    this.attributes = [
+      {}
+    ];
+  }
+}
+class emphasis_attributes{
+  constructor(){
+    this.a
+  }
+};
 class ClassSSML {
   constructor(id) {
     this.id = id;
     this.p = null;
     this.paragraph = null;//   
     this.say_as = new say_as();
-    this.emphasis = null;
+    this.emphasis = new emphasis();
     this.prosody =  new prosody();
     this.break = new break_();
     this.audio = new audio_();
