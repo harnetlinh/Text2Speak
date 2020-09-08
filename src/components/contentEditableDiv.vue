@@ -7,7 +7,7 @@
     style="border:1px solid black;width: 100%;height: 100%;" 
     @contextmenu.prevent="$refs.menu.open($event, {})"
     >
-    {{ <break/> }}
+    {{}}
   </div>
   <vue-context ref="menu">
         <template slot-scope="child" v-if="child.data">
@@ -129,6 +129,9 @@ const constructorSSML = {
     },
     break : {
       isDouble : 0,
+      innerText : "_",
+      styleType :"color",
+      styleValue : "red",
       isActive : 0,
       tag : "break",
       attributes : {
@@ -196,6 +199,20 @@ export default {
             VueContext 
     },
     methods:{
+      unwrap(wrapper) {
+      // place childNodes in document fragment
+      var docFrag = document.createDocumentFragment();
+      while (wrapper.firstChild) {
+        var child = wrapper.removeChild(wrapper.firstChild);
+        docFrag.appendChild(child);
+      }
+
+      // replace wrapper with document fragment
+      wrapper.parentNode.replaceChild(docFrag, wrapper);
+    },
+
+// Try it:
+// unwrap(document.getElementById("test"));
       getContent(){
         console.log(this.$refs.dynamicDiv.innerHTML)
         var str = this.$refs.dynamicDiv.innerHTML;
@@ -203,7 +220,7 @@ export default {
         console.log(str)
       },
         red(data){
-      var _this = this;    
+          var _this = this;    
           var selection = window.getSelection().getRangeAt(0);
           // console.log(window.getSelection())
           console.log("select "+ window.getSelection().anchorNode.parentNode.nodeName)
@@ -228,7 +245,17 @@ export default {
           }
       },
       tagBreak(){
-
+        var selection = document.getSelection().getRangeAt(0);
+        var toInsert = document.createElement(constructorSSML.break.tag);
+        toInsert.innerText = constructorSSML.break.innerText
+        toInsert.style[constructorSSML.break.styleType] = constructorSSML.break.styleValue
+        toInsert.setAttribute("id",this.numID)
+        var _this = this
+        toInsert.onclick = function(){
+              _this.getlistSSML(this.id)
+            }
+        // var newContent = oldContent.substring(0, cursorPos) + toInsert + oldContent.substring(cursorPos);
+        selection.insertNode(toInsert);
       },
       getlistSSML(id){
         console.log("id = "+id)
