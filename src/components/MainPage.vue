@@ -61,29 +61,11 @@
                 </b-form-checkbox>
               </b-col>
               <b-col sm="12">
-                <!-- <highlightable-input
-                  id="sel"
-                  ref="dynamicDiv"
-                  @mouseup="highlighter()"
-                  style="border:1px solid black;" 
-                  highlight-style="background-color:yellow" 
-                  :highlight-enabled="highlightEnabled" 
-                  :highlight="highlight" 
-                  v-model="msg"
-                  :key="componentKey"
-                /> -->
                 <contenteditableDiv
                   ref="contentEditableDiv"
+                  @transferObj="middleContent2Choice"
                 >
                 </contenteditableDiv>
-                <!-- <div 
-                id="sel"
-                ref="dynamicDiv"
-                contenteditable="true"
-                style="border:1px solid black;" 
-                >
-
-                </div> -->
               </b-col>
             </b-row>
             
@@ -105,10 +87,8 @@
               <b-col sm="15">
                 <ul style="list-style-type:none;">
                   <li>
-                    <choiceSub></choiceSub>
-                  </li>
-                  <li v-for="(i,index) in 10" :key="index">
-                    <component :is="choiceSSML"></component>
+                    <choiceSub ref="choiceSubComponent"
+                    ></choiceSub>
                   </li>
                 </ul>
               </b-col>
@@ -207,7 +187,12 @@ export default {
       red(){
         this.$refs.contentEditableDiv.red();
       },
-      
+      middleContent2Choice(data){
+        this.$refs.choiceSubComponent.getData(data)
+      },
+      middleChoice2Content(){
+
+      },
       gettext(){
         this.$refs.contentEditableDiv.getContent();
       },

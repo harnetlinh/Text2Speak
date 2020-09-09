@@ -38,152 +38,11 @@
 </template>
 
 <script>
-const constructorSSML = {
-    id : 0,
-    p : {
-      isDouble : 1,
-      isActive : 0,
-      tag : "emphasis",
-      attributes : {},
-    },
-    paragraph : {
-      isDouble : 1,
-      isActive : 0,
-      tag : "paragraph",
-      attributes : {},
-    },   
-    say_as : {
-      isDouble : 1,
-      isActive : 0,
-      tag : "say-as",
-      attributes : {
-        interpret_as : {
-          isActive : 0,
-          text : "interpret-as",
-          value: "",
-          options: ["date","time","literal","telephone","currency","cardinal","ordinal","digits"]
-        },
-        format : {
-          isActive : 0,
-          text : "format",
-          value: "",
-          options: []
-        },
-      },
-    },
-    emphasis : {
-      isDouble : 1,
-      isActive : 0,
-      tag : "emphasis",
-      attributes : {
-        level: {
-          isActive : 0,
-          text: "level",
-          value: "",
-          options: ["strong","moderate","none","reduced"]
-        }
-      }
-    },
-    prosody :  {
-      isDouble : 1,
-      isActive : 0,
-      tag : "emphasis",
-      attributes : {
-        pitch : {
-          isActive : 0,
-          text: "pitch",
-          value: "",
-          options: ["x-high","high","medium","low","x-low","default"]
-        },
-        contour : {
-          isActive : 0,
-          text: "contour",
-          value: "",
-          options: []
-        },
-        ranger : {
-          isActive : 0,
-          text: "ranger",
-          value: "",
-          options: ["x-high","high","medium","low","x-low","default"]
-        },
-        rate : {
-          isActive : 0,
-          text: "rate",
-          value: "",
-          options: ["x-fast","fast","medium","slow","x-slow","default"]
-        },
-        duration : {
-          isActive : 0,
-          text: "duration",
-          value: "",
-          options: []
-        },
-        volume : {
-          isActive : 0,
-          text: "rate",
-          value: "",
-          options: ["slient","x-soft","soft","medium","loud","x-loud","default"]
-        }
-      },
-    },
-    break : {
-      isDouble : 0,
-      innerText : "_",
-      styleType :"color",
-      styleValue : "red",
-      isActive : 0,
-      tag : "break",
-      attributes : {
-        strength : {
-          isActive : 0,
-          text: "strength",
-          value: "",
-          options: ["none","x-small","small","medium","large","x-large"]
-        },
-        time : {
-          isActive : 0,
-          text: "time",
-          value: "",
-          options: []
-        }
-      }
-    },
-    audio : {
-      isDouble : 0,
-      isActive : 0,
-      tag : "audio",
-      attributes : {
-        src : {
-          isActive : 0,
-          text: "src",
-          value: "",
-          options: []
-        }
-      }
-    },
-    desc : {
-      isDouble : 1,
-      isActive : 0,
-      tag : "desc",
-      attributes : {}
-    },
-    mark : {
-      isDouble : 1,
-      isActive : 0,
-      tag : "mark",
-      attributes : {
-        name : {
-          isActive : 0,
-          text: "name",
-          value: "",
-          options: []
-        }
-      }
-    }
-  }
+import construct from './lib/contruct'
 import VueContext from 'vue-context';
 import 'vue-context/src/sass/vue-context.scss';
+
+const constructorSSML = construct;
 export default {
     data(){
         return{
@@ -210,6 +69,7 @@ export default {
       // replace wrapper with document fragment
       wrapper.parentNode.replaceChild(docFrag, wrapper);
     },
+    
 
 // Try it:
 // unwrap(document.getElementById("test"));
@@ -258,12 +118,13 @@ export default {
         selection.insertNode(toInsert);
       },
       getlistSSML(id){
-        console.log("id = "+id)
+        // console.log("id = "+id)
         var one = this.listSSML.filter(function(one){
             return one.id == id
         })
         this.choosenTextData = one[0]
-        console.log(this.choosenTextData)
+        // console.log(this.choosenTextData)
+        this.$emit("transferObj",this.choosenTextData)
       },
     }
 }
