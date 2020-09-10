@@ -23,7 +23,7 @@
             </li>
         </template>
     </vue-context>
-    <b-form-checkbox
+    <!-- <b-form-checkbox
       id="checkbox-1"
       v-model="status"
       name="checkbox-1"
@@ -31,7 +31,7 @@
       unchecked-value="0"
     >
       Break
-    </b-form-checkbox>
+    </b-form-checkbox> -->
     <b-button @click="tagBreak()">SAVE</b-button>
 
 </div>
@@ -124,7 +124,7 @@ export default {
         })
         this.choosenTextData = one[0]
         // console.log(this.choosenTextData)
-        this.$emit("transferObj",this.choosenTextData)
+        this.$emit("transferObjFromContent",this.choosenTextData)
       },
     }
 }

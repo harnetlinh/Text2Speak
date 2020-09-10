@@ -1,7 +1,6 @@
 <template>
   <div>
     <b-form-checkbox
-      id="checkbox-1"
       v-model="tempData.p.isActive"
       name="checkbox-p"
       value="1"
@@ -10,7 +9,6 @@
       p
     </b-form-checkbox>
     <b-form-checkbox
-      id="checkbox-1"
       v-model="tempData.paragraph.isActive"
       name="checkbox-paragraph"
       value="1"
@@ -19,7 +17,6 @@
       paragraph
     </b-form-checkbox>
     <b-form-checkbox
-      id="checkbox-1"
       v-model="tempData.say_as.isActive"
       name="checkbox-say_as"
       value="1"
@@ -28,7 +25,6 @@
       say_as
     </b-form-checkbox>
     <b-form-checkbox
-      id="checkbox-1"
       v-model="tempData.emphasis.isActive"
       name="checkbox-emphasis"
       value="1"
@@ -37,7 +33,6 @@
       emphasis
     </b-form-checkbox>
     <b-form-checkbox
-      id="checkbox-1"
       v-model="tempData.prosody.isActive"
       name="checkbox-prosody"
       value="1"
@@ -46,7 +41,7 @@
       prosody
     </b-form-checkbox>
     <b-form-checkbox
-      id="checkbox-1"
+      
       v-model="tempData.break.isActive"
       name="checkbox-break"
       value="1"
@@ -55,7 +50,7 @@
       break
     </b-form-checkbox>
     <b-form-checkbox
-      id="checkbox-1"
+      
       v-model="tempData.audio.isActive"
       name="checkbox-audio"
       value="1"
@@ -64,7 +59,7 @@
       audio
     </b-form-checkbox>
     <b-form-checkbox
-      id="checkbox-1"
+      
       v-model="tempData.mark.isActive"
       name="checkbox-mark"
       value="1"
@@ -86,12 +81,13 @@ export default {
   },
   methods:{
     getData(data){
-      console.log("OK")
       this.tempData = data
-      console.log(data)
     },
     onClickSave(){
-
+      console.log(this.tempData.p)
+    },
+    setData(){
+      this.$emit("transferObjFromChoice",this.tempData)
     }
   }
 }

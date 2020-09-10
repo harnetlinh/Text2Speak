@@ -63,7 +63,8 @@
               <b-col sm="12">
                 <contenteditableDiv
                   ref="contentEditableDiv"
-                  @transferObj="middleContent2Choice"
+                  @transferObjFromContent="middleContent2Choice"
+                  @transferObjFromChoice="middleChoice2Content"
                 >
                 </contenteditableDiv>
               </b-col>
@@ -85,12 +86,12 @@
         <div class="col-lg-3 col-sm">
           <div class="card center-div overflow-auto" style="" >
               <b-col sm="15">
-                <ul style="list-style-type:none;">
-                  <li>
+                <!-- <ul style="list-style-type:none;">
+                  <li> -->
                     <choiceSub ref="choiceSubComponent"
                     ></choiceSub>
-                  </li>
-                </ul>
+                  <!-- </li>
+                </ul> -->
               </b-col>
           </div>
         </div>
@@ -158,6 +159,7 @@ export default {
         textSend: '',
         voicerecord:nullAudio,
         msg: '',
+        ToChoice:{},
         isReady:false,
         componentKey : 0,
         listSSML:[],
@@ -190,8 +192,8 @@ export default {
       middleContent2Choice(data){
         this.$refs.choiceSubComponent.getData(data)
       },
-      middleChoice2Content(){
-
+      middleChoice2Content(data){
+        this.$refs.contentEditableDiv.getData(data)
       },
       gettext(){
         this.$refs.contentEditableDiv.getContent();
