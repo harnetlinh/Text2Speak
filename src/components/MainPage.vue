@@ -89,6 +89,8 @@
                 <!-- <ul style="list-style-type:none;">
                   <li> -->
                     <choiceSub ref="choiceSubComponent"
+                    @removechoiceSSML="removeSSMLbyID"
+                    @choosen="red"
                     ></choiceSub>
                   <!-- </li>
                 </ul> -->
@@ -187,18 +189,20 @@ export default {
           this.engine = engine; 
       },
       red(){
-        this.$refs.contentEditableDiv.red();
+        this.$refs.contentEditableDiv.addSSML();
       },
-      middleContent2Choice(data){
-        this.$refs.choiceSubComponent.getData(data)
+      middleContent2Choice(){
+        this.$refs.choiceSubComponent.getData()
       },
-      middleChoice2Content(data){
-        this.$refs.contentEditableDiv.getData(data)
+      middleChoice2Content(){
+        this.$refs.contentEditableDiv.getData()
       },
       gettext(){
         this.$refs.contentEditableDiv.getContent();
       },
-      
+      removeSSMLbyID(){
+        this.$refs.contentEditableDiv.unwrapSSML_byID();
+      },
       sendMsg(){
         this.$bvModal.show('modal-spinner')
         axios.post(`http://c39a6c482a7a.ngrok.io/getOnlyMp3`,{

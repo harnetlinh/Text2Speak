@@ -16,6 +16,7 @@ const constructorSSML = {
       isDouble : 1,
       isActive : 0,
       tag : "say-as",
+      class : "say_as",
       attributes : {
         interpret_as : {
           isActive : 0,
@@ -35,6 +36,7 @@ const constructorSSML = {
       isDouble : 1,
       isActive : 0,
       tag : "emphasis",
+      class : "emphasis",
       attributes : {
         level: {
           isActive : 0,
@@ -47,7 +49,8 @@ const constructorSSML = {
     prosody :  {
       isDouble : 1,
       isActive : 0,
-      tag : "emphasis",
+      tag : "prosody",
+      class : "prosody",
       attributes : {
         pitch : {
           isActive : 0,
@@ -90,8 +93,7 @@ const constructorSSML = {
     break : {
       isDouble : 0,
       innerText : "_",
-      styleType :"color",
-      styleValue : "red",
+      class : "break",
       isActive : 0,
       tag : "break",
       attributes : {
@@ -112,6 +114,8 @@ const constructorSSML = {
     audio : {
       isDouble : 0,
       isActive : 0,
+      innerText: "audio",
+      class : "audio",
       tag : "audio",
       attributes : {
         src : {

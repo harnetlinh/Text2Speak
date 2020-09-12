@@ -12,8 +12,8 @@
   <vue-context ref="menu">
         <template slot-scope="child" v-if="child.data">
             <li>
-                <a @click="red(child.data)">
-                    RED
+                <a @click="addSSML(child.data)">
+                    addSSML
                 </a>
             </li>
             <li>
@@ -33,6 +33,11 @@
       Break
     </b-form-checkbox> -->
     <b-button @click="tagBreak()">SAVE</b-button>
+    <b-button @click="change()">CHANGE TAG</b-button>
+    <b-button @click="saveee()">SAVE SELECTION</b-button>
+    <b-input v-model="choosenSSML"></b-input>
+    
+    <!-- <b-button @click="">TEST</b-button> -->
 
 </div>
 </template>
@@ -51,13 +56,30 @@ export default {
         top: '0px',
         left: '0px',
         listSSML:[],
-        choosenTextData:{}
+        choosenTextData:{},
+        choosenSSML:"",
+        testSave:{}
         }
     },
     components: {
             VueContext 
     },
+    // watch:{
+    //   selectText:()=>{
+
+    //   }
+    // },
+    // computed:{
+    //   selectText(){
+    //     return window.getSelection().getRangeAt(0).extractContents();
+    //   }
+    // },
     methods:{
+      change(){
+      },
+      getData(){
+
+      },
       unwrap(wrapper) {
       // place childNodes in document fragment
       var docFrag = document.createDocumentFragment();
@@ -79,52 +101,112 @@ export default {
         str =  str.replace("></break>","/>")
         console.log(str)
       },
-        red(data){
+      addProperties(id){
+        document.getElementById(id)
+      },
+      // checkEmptyString(str){
+      //   let re = new RegExp('/([A-Z,0-9])\w+/g');
+      // },
+      unwrapSSML_byID(){
+        document.getElementById(this.$store.getters.currentID).outerHTML = document.getElementById(this.$store.getters.currentID).innerHTML;
+
+      },
+      saveee(){
+        this.testSave = this.saveSelection()
+        console.log(this.testSave)
+      },
+      saveSelection() {
+          if (window.getSelection) {
+              var sel = window.getSelection();
+              if (sel.getRangeAt && sel.rangeCount) {
+                  return sel.getRangeAt(0);
+              }
+          } else if (document.selection && document.selection.createRange) {
+              return document.selection.createRange();
+          }
+          return null;
+      },
+        addSSML(){
+          console.log(this.testSave)
+          // listKey = Object.keys(data)
+          this.choosenSSML = this.$store.getters.choosenTag;
+          console.log(this.choosenSSML)
+            console.log("SSML")
+          // listKey.forEach(e => {
+            if(this.choosenSSML)
+            {
+              var tag = constructorSSML.p.tag
+              var selection = window.getSelection().getRangeAt(0);
+              console.log("nodeName "+window.getSelection().anchorNode.parentNode.nodeName)
+              console.log(selection)
+              if(window.getSelection().anchorNode.parentNode.nodeName === 'SAY-AS') //&& (!selection.extractContents().replace(/\s/g, '').length || selection.extractContents() === ""))
+              // window.getSelection().anchorNode.parentNode.nodeName === 'sel'
+              {
+                console.log("OKKKKKKKK")
+                let selectedText = selection.extractContents();
+                selection.insertNode("");
+              }else{
+                console.log("ELSE")
+                console.log(constructorSSML)
+                // if(window.getSelection().baseNode.parentNode.id != "sel") return;
+                let selectedText = selection.extractContents();
+                let span = document.createElement(constructorSSML[this.choosenSSML].tag);
+                console.log(constructorSSML)
+                this.numID++;
+                span.setAttribute("id",this.numID)
+                let x = new Object(constructorSSML)
+                x.id = this.numID;
+                console.log("this.choosenSSML = "+this.choosenSSML)
+                console.log(x[this.choosenSSML])
+                x[this.choosenSSML].isActive = 1;
+                this.$store.dispatch('ssml/pushSSML', x);
+                this.$store.dispatch('ssml/changeOption', {'currentID':this.numID});
+                span.onclick = function(){
+                  _this.getlistSSML(this.id)
+                }
+                span.classList.add(constructorSSML[this.choosenSSML].class);
+                span.appendChild(selectedText);
+                selection.insertNode(span);
+                this.$emit("transferObjFromContent")
+              }
+            }else{
+              console.log("please choose a tag")
+            }
+            
+          // });
           var _this = this;    
-          var selection = window.getSelection().getRangeAt(0);
+          
           // console.log(window.getSelection())
           console.log("select "+ window.getSelection().anchorNode.parentNode.nodeName)
-          if(window.getSelection().anchorNode.parentNode.nodeName === "SPEAK")
-          {console.log("SPEAK");
-          // console.log(window.getSelection().anchorNode.parentNode.nodeName = "")
-          }else{
-            if(window.getSelection().baseNode.parentNode.id != "sel") return;
-            var selectedText = selection.extractContents();
-            var span = document.createElement("speak");
-            this.numID++;
-            span.setAttribute("id",this.numID)
-            let x = new Object(constructorSSML)
-            x.id = this.numID;
-            this.listSSML.push(x)
-            span.onclick = function(){
-              _this.getlistSSML(this.id)
-            }
-            span.style.color = "red";
-            span.appendChild(selectedText);
-            selection.insertNode(span);
-          }
+          
+      },
+      choose(text){
+        this.choosenSSML = text
       },
       tagBreak(){
-        var selection = document.getSelection().getRangeAt(0);
-        var toInsert = document.createElement(constructorSSML.break.tag);
-        toInsert.innerText = constructorSSML.break.innerText
-        toInsert.style[constructorSSML.break.styleType] = constructorSSML.break.styleValue
-        toInsert.setAttribute("id",this.numID)
-        var _this = this
-        toInsert.onclick = function(){
-              _this.getlistSSML(this.id)
-            }
-        // var newContent = oldContent.substring(0, cursorPos) + toInsert + oldContent.substring(cursorPos);
-        selection.insertNode(toInsert);
+        this.$store.dispatch('ssml/pushSSML', 1);
+        console.log(this.$store.getters.listSSML)
+        // var selection = document.getSelection().getRangeAt(0);
+        // var toInsert = document.createElement("");
+        // toInsert.innerText = constructorSSML.break.innerText
+        // // toInsert.style[constructorSSML.break.styleType] = constructorSSML.break.styleValue
+        // // toInsert.setAttribute("id",this.numID)
+        // // var _this = this
+        // // toInsert.onclick = function(){
+        // //       _this.getlistSSML(this.id)
+        // //     }
+        // // var newContent = oldContent.substring(0, cursorPos) + toInsert + oldContent.substring(cursorPos);
+        // selection.insertNode(toInsert);
       },
       getlistSSML(id){
         // console.log("id = "+id)
         var one = this.listSSML.filter(function(one){
             return one.id == id
         })
+        console.log("getlistSSML")
         this.choosenTextData = one[0]
         // console.log(this.choosenTextData)
-        this.$emit("transferObjFromContent",this.choosenTextData)
+        this.$emit("transferObjFromContent")
       },
     }
 }
