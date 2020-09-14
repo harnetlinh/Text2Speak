@@ -22,22 +22,7 @@ function restoreSelection(range) {
         }
     }
 }
-
-/**
-* How to use:
-* You have a text editor, or a textarea, or any text element, then you want to create a widget 
-* that adds a link, or anything that causes a new element to get focus so your text element looses it and
-* selection is lost, then you may want to restore that selection after.
-*/
-
-var selectionRange = saveSelection();
-
-// then, you loose focus
-
-/**
-* You get what you wanted and you want your selection back there
-*/
-restoreSelection(selectionRange);
-
-
-// Credits: Tim Down's SO answer http://stackoverflow.com/a/3316483/1470564
+module.exports = {
+    saveSelection,
+    restoreSelection
+}

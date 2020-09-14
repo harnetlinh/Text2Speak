@@ -7,7 +7,7 @@
     style="border:1px solid black;width: 100%;height: 100%;" 
     @contextmenu.prevent="$refs.menu.open($event, {})"
     >
-    {{}}
+    
   </div>
   <vue-context ref="menu">
         <template slot-scope="child" v-if="child.data">
@@ -23,26 +23,18 @@
             </li>
         </template>
     </vue-context>
-    <!-- <b-form-checkbox
-      id="checkbox-1"
-      v-model="status"
-      name="checkbox-1"
-      value="1"
-      unchecked-value="0"
-    >
-      Break
-    </b-form-checkbox> -->
+
     <b-button @click="tagBreak()">SAVE</b-button>
     <b-button @click="change()">CHANGE TAG</b-button>
-    <b-button @click="saveee()">SAVE SELECTION</b-button>
+    <b-button @click="saveSelect()">SAVE SELECTION</b-button>
+    <b-button @click="restore()">RESTORE SELECTION</b-button>
     <b-input v-model="choosenSSML"></b-input>
-    
-    <!-- <b-button @click="">TEST</b-button> -->
 
 </div>
 </template>
 
 <script>
+import {saveSelection,restoreSelection} from './lib/storeSelection'
 import construct from './lib/contruct'
 import VueContext from 'vue-context';
 import 'vue-context/src/sass/vue-context.scss';
@@ -58,7 +50,8 @@ export default {
         listSSML:[],
         choosenTextData:{},
         choosenSSML:"",
-        testSave:{}
+        testSave:{},
+        windowSelectionValue:{}
         }
     },
     components: {
@@ -75,6 +68,12 @@ export default {
     //   }
     // },
     methods:{
+      saveSelect(){
+        this.windowSelectionValue = saveSelection();
+      },
+      restore(){
+        restoreSelection(this.windowSelectionValue)
+      },
       change(){
       },
       getData(){
@@ -111,21 +110,6 @@ export default {
         document.getElementById(this.$store.getters.currentID).outerHTML = document.getElementById(this.$store.getters.currentID).innerHTML;
 
       },
-      saveee(){
-        this.testSave = this.saveSelection()
-        console.log(this.testSave)
-      },
-      saveSelection() {
-          if (window.getSelection) {
-              var sel = window.getSelection();
-              if (sel.getRangeAt && sel.rangeCount) {
-                  return sel.getRangeAt(0);
-              }
-          } else if (document.selection && document.selection.createRange) {
-              return document.selection.createRange();
-          }
-          return null;
-      },
         addSSML(){
           console.log(this.testSave)
           // listKey = Object.keys(data)
@@ -136,7 +120,7 @@ export default {
             if(this.choosenSSML)
             {
               var tag = constructorSSML.p.tag
-              var selection = window.getSelection().getRangeAt(0);
+              var selection = this.windowSelectionValue;
               console.log("nodeName "+window.getSelection().anchorNode.parentNode.nodeName)
               console.log(selection)
               if(window.getSelection().anchorNode.parentNode.nodeName === 'SAY-AS') //&& (!selection.extractContents().replace(/\s/g, '').length || selection.extractContents() === ""))
