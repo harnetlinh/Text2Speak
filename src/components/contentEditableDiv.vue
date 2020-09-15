@@ -197,6 +197,7 @@ export default {
 </script>
 
 <style>
+@import './lib/styleContruct.css';
 body {
     width: 100%;
     height: 100%;

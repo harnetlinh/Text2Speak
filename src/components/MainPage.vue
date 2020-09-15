@@ -77,6 +77,7 @@
                 <b-button @click="forceUpdate()">FORCE UPDATE</b-button>
                 <b-button @click="gettext()">GET TEXT</b-button>
                 <b-button @click="red()">HIGHTLIGHT TEXT</b-button>
+                <b-button @click="getTestAudio()">getTestAudio</b-button>
               </div>
             </div>
 
@@ -134,12 +135,13 @@
 </template>
 
 <script>
+import play from 'audio-play'
 import contenteditableDiv from './contentEditableDiv'
 import choiceSub from './choices/choiceSub'
 import Crunker from 'crunker'
 import axios from 'axios';
 import HighlightableInput from "vue-highlightable-input"
-import Aplayer from 'vue-aplayer'
+import aplayer from 'vue-aplayer'
 import compo from './elements/button'
 import speak from './elements/speak'
 const audio = new Crunker();
@@ -148,7 +150,7 @@ export default {
     name: 'QnAMaker',
     components : {
       HighlightableInput,
-      Aplayer,
+      aplayer,
       'speak':speak,
       choiceSub,
       contenteditableDiv
@@ -183,6 +185,35 @@ export default {
     this.test = compo;
   },
     methods:{
+      getTestAudio(){
+        this.axios.get('http://localhost:3000/test').then((res)=>{
+          this.voicerecord = res.data.mp3[0].audioContent
+          console.log(res)
+          let pause = play(this.voicerecord, {
+          //start/end time, can be negative to measure from the end
+          start: 0,
+          end: this.voicerecord.duration,
+
+          //repeat playback within start/end
+          loop: false,
+
+          //playback rate
+          rate: 1,
+
+          //fine-tune of playback rate, in cents
+          detune: 0,
+
+          //volume
+          volume: 1,
+
+          //possibly existing audio-context, not necessary
+          context: require('audio-context'),
+
+          //start playing immediately
+          autoplay: true
+        },);
+        })
+      },
       objSSML(id,maker,engine){ 
           this.id = id; 
           this.maker = maker; 

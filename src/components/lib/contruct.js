@@ -5,12 +5,14 @@ const constructorSSML = {
       isActive : 0,
       tag : "p",
       attributes : {},
+      class: 'pp',
     },
     paragraph : {
       isDouble : 1,
       isActive : 0,
       tag : "paragraph",
       attributes : {},
+      class : "paragraph",
     },   
     say_as : {
       isDouble : 1,
